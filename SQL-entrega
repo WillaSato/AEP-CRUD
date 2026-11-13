@@ -1,0 +1,64 @@
+create table doador (
+         doad_id integer generated always as identity,
+         doad_nome varchar(100) not null,
+         doad_email varchar(100) not null,
+         doad_telefone varchar(20) not null,
+         doad_endereco varchar(200) not null,
+         doad_tipo varchar(45) not null,
+         primary key (doad_id)
+);
+
+create table instituicao (
+         inst_id integer generated always as identity,
+         inst_nome varchar(100) not null,
+         inst_cnpj varchar(45) not null,
+         inst_email varchar(100),
+         inst_telefone varchar(45) not null,
+         inst_endereco varchar(200) not null,
+         inst_tipo varchar(100) not null,
+         primary key (inst_id)
+);
+
+create table alimento (
+        alim_id integer generated always as identity,
+        alim_nome varchar(100) not null,
+        alim_categoria varchar(100) not null,
+        alim_descricao varchar(200),
+        primary key (alim_id)
+);
+
+create table doacao (
+        doac_id integer generated always as identity,
+        doac_descricao varchar(100) not null,
+        doac_data date not null,
+        doac_status varchar(45) not null,
+        doador_doad_id integer not null,
+        instituicao_inst_id integer,
+        primary key (doac_id),
+        foreign key (doador_doad_id) references doador (doad_id),
+        foreign key (instituicao_inst_id) references instituicao (inst_id)
+);
+
+create table item_doacao (
+        itm_id integer generated always as identity,
+        itm_qtd integer not null,
+        itm_dt_validade date not null,
+        doacao_doac_id integer not null,
+        alimento_alim_id integer not null,
+        primary key (itm_id),
+        foreign key (doacao_doac_id) references doacao (doac_id),
+        foreign key (alimento_alim_id) references alimento (alim_id)
+);
+
+create table entrega (
+        entr_id integer generated always as identity,
+        entr_end_coleta varchar(200) not null,
+        entr_end_entrega varchar(200) not null,
+        entr_dt_entrega date not null,
+        entr_hora_entrega time not null,
+        entr_tipo varchar(45) not null,
+        entr_status varchar(45) not null,
+        doacao_doac_id integer not null,
+        primary key (entr_id),
+        foreign key (doacao_doac_id) references doacao (doac_id)
+);
